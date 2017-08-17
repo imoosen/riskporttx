@@ -1,0 +1,83 @@
+server:
+  port: 8070
+
+
+spring:
+  application:
+    name: 大数据风控腾讯渠道接口
+  http:
+    encoding:
+      enabled: true
+      force: true
+      charset: UTF-8
+  datasource:
+    name: riskporttx
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://138.138.81.160:3306/bigdatadb?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
+    filters: stat
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    minIdle: 1
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxOpenPreparedStatements: 20
+  messages:
+    basename: i18n/messages
+    
+kafka:
+  consumer:
+    zookeeper:
+      connect: 138.138.81.191:2181,138.138.81.192:2181,138.138.81.193:2181
+      session.timeout.ms: 4000
+      sync.time.ms: 200
+    group:
+      id: zdtest
+    auto:
+      commit.interval.ms: 1000
+      offset.reset: smallest
+    serializer.class: kafka.serializer.StringEncoder
+    default:
+      topic: tengxun
+  producer:
+    broker:
+      list: 138.138.81.195:9092,138.138.81.196:9092,138.138.81.197:9092
+    serializer:
+      class: kafka.serializer.StringEncoder
+    key:
+      serializer:
+        class: kafka.serializer.StringEncoder
+    request:
+      required:
+        acks: 1
+    partitioner:
+      class: kafka.producer.DefaultPartitioner
+
+mybatis:
+  typeAliasesPackage: com.allinpay.bigdata.model
+  mapperLocations: classpath:mapper/*.xml
+  configLocation: classpath:mybatis/mybatis-config.xml      
+
+# 公共参数配置  
+commonparams:
+  # 文件服务器配置
+  storageuser: wjtstore
+  uppoint: http://138.138.83.50:8080/upload
+  downpoint: http://138.138.83.50:8080/download
+  accessKey: CFBYED3YFL240C3V8J2J
+  secretKey: mNYOrDHaqcOjfNYisycGnfv7JlMMmJoJrMeNAFBW
+  # 腾讯优图配置
+  appid: 1253855487
+  bucket: wjt2
+  yotosecretid: AKIDCBwlNkLkNluoUuq0f4IGxOZYIm22aIYZ
+  yotosecretkey: t75nFRO4UeaFeGdmgKirtfBSTDhvsZ2G
+  # 天御反欺诈参数
+  phonehead: 0086-
